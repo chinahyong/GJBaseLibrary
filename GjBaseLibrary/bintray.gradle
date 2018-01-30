@@ -5,7 +5,7 @@ def gitUrl = 'https://github.com/chinahyong/GJBaseLibrary.git'
 
 def libName = "GJBaseLibrary" // 上传到 Bintray 的 package 名称。
 group = "tv.guojiang"
-version = "1.0.8"
+version = "1.0.9.1"
 
 install {
     repositories.mavenInstaller {
