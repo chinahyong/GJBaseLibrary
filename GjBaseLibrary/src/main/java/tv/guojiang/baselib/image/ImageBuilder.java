@@ -138,11 +138,11 @@ public class ImageBuilder {
      */
     public ImageBuilder into(ImageView imageView) {
         mImageEntity.imageView = imageView;
-        ImageDirector.getInstance().loadImage();
+        ImageDirector.getInstance().loadImage(this);
         return this;
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return mContext;
     }
 
@@ -150,6 +150,6 @@ public class ImageBuilder {
      * 同步加载图片
      */
     public Object intoSyn() throws Exception {
-        return ImageDirector.getInstance().loadImageSyn();
+        return ImageDirector.getInstance().loadImageSyn(this);
     }
 }

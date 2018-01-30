@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -21,6 +23,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -35,10 +44,11 @@ dependencies {
     compile rootProject.ext.dependencies.cookie
     compile rootProject.ext.dependencies.diskLruCache
 
-
 //    compile rootProject.ext.dependencies.luban
 //    compile rootProject.ext.dependencies.rxbinding
 //    compile(rootProject.ext.dependencies.multitype, {
 //        exclude group: 'com.android.support'
 //    })
 }
+
+apply from: 'bintray.gradle'

@@ -1,0 +1,89 @@
+//项目主页
+def siteUrl = 'https://github.com/chinahyong/GJBaseLibrary'
+//项目的git地址
+def gitUrl = 'https://github.com/chinahyong/GJBaseLibrary.git'
+
+def libName = "GJBaseLibrary" // 上传到 Bintray 的 package 名称。
+group = "tv.guojiang"
+version = "1.0.8"
+
+install {
+    repositories.mavenInstaller {
+        // 生成pom.xml和参数
+        pom {
+            project {
+                packaging 'aar'
+                // 项目描述，复制我的话，这里需要修改。
+                name 'GjBaseLibrary'// 可选，项目名称。
+                description '用户多项目lib库封装'// 可选，项目描述。
+                url siteUrl // 项目主页，这里是引用上面定义好。
+
+                // 软件开源协议，现在一般都是Apache License2.0吧，复制我的，这里不需要修改。
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                //填写开发者基本信息，复制我的，这里需要修改。
+                developers {
+                    developer {
+                        id 'yongh' // 开发者的id。
+                        name 'yonghuang' // 开发者名字。
+                        email 'yonghuang1214@gmail.com' // 开发者邮箱。
+                    }
+                }
+
+                // SCM，复制我的，这里不需要修改。
+                scm {
+                    connection gitUrl // Git仓库地址。
+                    developerConnection gitUrl // Git仓库地址。
+                    url siteUrl // 项目主页。
+                }
+            }
+        }
+    }
+}
+
+// bintray 用户名
+def bintrayUser = 'yonghuang'
+// bintray APIkey
+def bintrayApiKey = '568ec0b4f1e8db631fcd19da9e6a00dd86b7913c'
+bintray {
+    user = bintrayUser
+    key = bintrayApiKey
+    configurations = ['archives']
+    pkg {
+        //这里的repo值必须要和你创建Maven仓库的时候的名字一样
+        repo = "SelfBaseLibrary"
+        //发布到JCenter上的项目名字
+        name = libName
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true //是否是公开项目。
+    }
+}
+
+// 生成jar包的task，不需要修改。
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+// 生成jarDoc的task，不需要修改。
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    // destinationDir = file("../javadoc/")
+    failOnError false // 忽略注释语法错误，如果用jdk1.8你的注释写的不规范就编译不过。
+}
+// 生成javaDoc的jar，不需要修改。
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
